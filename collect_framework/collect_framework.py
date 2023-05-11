@@ -16,7 +16,9 @@ def get_number_char(string: str, file: str) -> int:
             string = f.read()
     if not string:
         raise ValueError("Either --string or --file must be provided.")
-    return sum(1 for ch in string if string.count(ch) == 1)
+    res = sum(1 for ch in string if string.count(ch) == 1)
+    click.echo(f'number of characters: {res}')
+    return res
 
 
 def get_collection_number(strings: list[str] | tuple[str]) -> list:
