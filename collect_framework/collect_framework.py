@@ -1,11 +1,21 @@
 """This Collection Framework module"""
-# from time import time
+import click
 from functools import lru_cache
 
 
+@click.command()
+@click.option('--string', help='The string to process', required=False)
+@click.option('--file', type=click.Path(exists=True), help='The path to the input text file', required=False)
 @lru_cache(typed=True, maxsize=1024)
-def get_number_char(string: str) -> int:
-    """function returns the number of characters in the string occurring only once"""
+def get_number_char(string: str, file: str) -> int:
+    """The function returns the number of characters in a string that occur only once.
+    The function also has a command line interface that allows you to enter as input text not only the line --string,
+    but also the text file --file.  In this case, the --file command will take precedence!"""
+    if file:
+        with open(file, 'r') as f:
+            string = f.read()
+    if not string:
+        raise ValueError("Either --string or --file must be provided.")
     return sum(1 for ch in string if string.count(ch) == 1)
 
 
@@ -26,15 +36,7 @@ def do_collection_checks(collection: list | tuple | str) -> list:
 
 
 if __name__ == '__main__':
-    # start = time()
-    assert do_collection_checks("abbbccdf") == [3]
-    # assert do_collection_checks('0') == [1]
-    # assert do_collection_checks("wmmmmmmmwww") == [0]
-    # assert do_collection_checks("Write an application that takes a string") == [7]
-    # assert do_collection_checks(("abbbccdf", "abbbccdfA", '12345')) == [3, 4, 5]
-    # assert do_collection_checks(["abbbccdf", "abbbccdfA", "Write an application that takes a string"]) == [3, 4, 7]
+    print(get_number_char())
+
+    # assert do_collection_checks("abbbccdf") == [3]
     # assert do_collection_checks(("abv", '0423-50', 'hdhdh73322', 'True', 'None')) == [3, 5, 1, 4, 4]
-    #
-    # end = time()
-    # print(f'test time: {end - start} s.')
-    # print(get_number_char.cache_info())
