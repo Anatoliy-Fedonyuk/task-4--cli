@@ -6,11 +6,6 @@ from functools import lru_cache
 @lru_cache(typed=True, maxsize=1024)
 def get_number_char(string: str = None, file: str = None) -> int:
     """The function returns the number of characters in a string that occur only once"""
-    if file:
-        with open(file, encoding='utf-8') as f:
-            string = f.read()
-    if not string:
-        raise ValueError("Either --string or --file must be provided.")
     return sum(1 for ch in string if string.count(ch) == 1)
 
 
@@ -18,15 +13,16 @@ def get_number_char(string: str = None, file: str = None) -> int:
 @click.option('--string', help='The string to process', required=False)
 @click.option('--file', type=click.Path(exists=True), help='The path to the input text file', required=False)
 def main(string: str, file: str) -> None:
-    """The function returns the number of characters in a string that occur only once.
-        The function also has a command line interface that allows you to enter as input text not only the line --string,
-        but also the text file --file.  In this case, the --file command will take precedence!"""
-    if string or file:
-        result = get_number_char(string=string, file=file)
-        if file: string = file
-        click.secho(f'THERE ARE {result} UNIQUE CHARACTERS IN THIS TEXT!', bg='bright_white', fg='black')
-    else:
-        click.secho('Either --string or --file must be provided.', bg='bright_white', fg='black')
+    """This function implements the command line interface for the function get_number_char.
+     In this case, the --file command will take precedence!"""
+    if not string and not file:
+        return click.secho('Either --string or --file must be provided!', bg='bright_white', fg='black')
+    if file:
+        with open(file, encoding='utf-8') as f:
+            string = f.read()
+
+    result = get_number_char(string=string)
+    click.secho(f'THERE ARE {result} UNIQUE CHARACTERS IN THIS TEXT!', bg='bright_white', fg='black')
 
 
 def get_collection_number(strings: list[str] | tuple[str]) -> list:
