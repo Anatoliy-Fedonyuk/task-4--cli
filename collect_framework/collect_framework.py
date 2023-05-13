@@ -4,14 +4,14 @@ from functools import lru_cache
 
 
 @lru_cache(typed=True, maxsize=1024)
-def get_number_char(string: str = None, file: str = None) -> int:
+def get_number_char(string: str) -> int:
     """The function returns the number of characters in a string that occur only once"""
     return sum(1 for ch in string if string.count(ch) == 1)
 
 
 @click.command()
-@click.option('--string', help='The string to process', required=False)
-@click.option('--file', type=click.Path(exists=True), help='The path to the input text file', required=False)
+@click.option('--string', '-s',  help='The string to process')
+@click.option('--file', '-f', type=click.Path(exists=True), help='The path to the input text file')
 def main(string: str, file: str) -> None:
     """This function implements the command line interface for the function get_number_char.
      In this case, the --file command will take precedence!"""
@@ -43,3 +43,5 @@ def do_collection_checks(collection: list | tuple | str) -> list:
 
 if __name__ == '__main__':
     main()
+    assert do_collection_checks(("abbbccdf", "abbbccdfA", '12345')) == [3, 4, 5]
+    assert do_collection_checks("wmmmmmmmwww") == 0
