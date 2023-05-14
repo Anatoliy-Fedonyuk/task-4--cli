@@ -1,3 +1,4 @@
+"""--Pytest for CLI collect_framework--"""
 import pytest
 from click.testing import CliRunner
 from collect_framework.collect_framework import main
