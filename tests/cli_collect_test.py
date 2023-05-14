@@ -35,7 +35,7 @@ def test_cli_both(tmp_path):
 
 
 def test_cli_no_args():
-    """didn't pass any argument"""
+    """Кейс 4: didn't pass any argument"""
     runner = CliRunner()
     result = runner.invoke(main)
     assert result.exit_code == 0
