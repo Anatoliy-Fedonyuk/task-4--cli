@@ -1,8 +1,6 @@
 """This Collection Framework module"""
 from functools import lru_cache
 import click
-import logging
-import logs.logger
 
 
 @lru_cache(typed=True, maxsize=1024)
@@ -17,7 +15,6 @@ def get_number_char(string: str) -> int:
 def main(string: str, file: str) -> None:
     """This function implements the command line interface for the function get_number_char.
     In this case, the --file command will take precedence!"""
-    # logging.info('Starting the logs...')
     if not string and not file:
         return click.secho('Either --string or --file must be provided!', bg='bright_white', fg='black')
     if file:
@@ -26,7 +23,6 @@ def main(string: str, file: str) -> None:
 
     result = get_number_char(string=string)
     click.secho(f'THERE ARE {result} UNIQUE CHARACTERS IN THIS TEXT!', bg='bright_white', fg='black')
-    # logging.info('Logs finished!')
 
 
 def get_collection_number(strings: list[str] | tuple[str]) -> list:
@@ -46,12 +42,6 @@ def do_collection_checks(collection: list | tuple | str) -> list:
 
 
 if __name__ == '__main__':
-    # Начало логирования
-    logging.info('Starting the program...')
-
     main()
     assert do_collection_checks(("abbbccdf", "abbbccdfA", '12345')) == [3, 4, 5]
     assert do_collection_checks("wmmmmmmmwww") == [0]
-
-    # Конец логирования
-    logging.info('Program finished!')
